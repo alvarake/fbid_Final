@@ -24,6 +24,7 @@ services:
     container_name: mongo_container
     image: mongo:3.4
     command: --nojournal --noauth
+    #./resources/import_distances.sh
     networks:
       - red-global
     volumes:
@@ -31,8 +32,6 @@ services:
       - ../resources:/resources
     ports:
       - "27017:27017"
-    # environment:
-    #   - MONGO_INITDB_ROOT_USERNAME=root
-    #   - MONGO_INITDB_ROOT_PASSWORD=example
+  
 networks: 
   red-global:
