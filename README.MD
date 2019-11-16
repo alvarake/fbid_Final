@@ -1,0 +1,1 @@
+Para el correcto funcionanmiento se necesita el modelo ya entrenado y correr el ./resources/import_distances.sh en mongoDB.
