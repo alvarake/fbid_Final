@@ -67,6 +67,20 @@ services:
     networks:
       - red-global
 
+  web:
+    container_name: web
+    build: ./web/
+    ports:
+      - "5000:5000"
+    networks:
+      - red-global
+    command: /app/predict_flask.py
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/
+    volumes:
+      - ./web/app:/app
+networks: 
+  red-global:
 
   # spark-master:
   #   image: bde2020/spark-master:2.4.4-hadoop2.7
@@ -103,6 +117,5 @@ services:
   #     - "constraint:node==spark-worker-1"
   #   networks:
   #     - red-global
-networks: 
-  red-global:
+
     #sudo /spark/bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.4,org.mongodb.spark:mongo-spark-connector_2.11:2.4.1 --class es.upm.dit.ging.predictor.MakePrediction --master local /prediction-job/flight_prediction_2.11-0.1.jar
