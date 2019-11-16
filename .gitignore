@@ -9,3 +9,4 @@ kafka_2.12-2.3.0
 data
 simple_flight_delay_features.jsonl
 models
+dockerizacion/web/app/__pycache__/

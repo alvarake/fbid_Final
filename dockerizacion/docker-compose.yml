@@ -3,6 +3,9 @@ services:
   zookeeper:
     container_name: zookeeper_container
     image: wurstmeister/zookeeper
+    environment:
+      MYID: 1
+      SERVERS: zookeeper
     ports:
       - "2181:2181"
     networks:
@@ -12,12 +15,14 @@ services:
     container_name: kafka_container
     image: wurstmeister/kafka
     ports:
-      - "9092"
+      - "9092:9092"
+    depends_on:
+      - zookeeper
     environment:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_HOST_NAME: localhost
       KAFKA_CREATE_TOPICS: "flight_delay_classification_request:1:1"
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
-      KAFKA_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENERS: PLAINTEXT://:9092
     networks:
       - red-global
 
@@ -66,7 +71,6 @@ services:
       - ../models:/models
     networks:
       - red-global
-
   web:
     container_name: web
     build: ./web/
@@ -81,41 +85,3 @@ services:
       - ./web/app:/app
 networks: 
   red-global:
-
-  # spark-master:
-  #   image: bde2020/spark-master:2.4.4-hadoop2.7
-  #   container_name: spark-master
-  #   ports:
-  #   - "8080:8080"
-  #   - "7077:7077"
-  #   - "9001:9001"
-  #   environment:
-  #     - INIT_DAEMON_STEP=setup_spark
-  #     - "constraint:node==spark-master"
-  #     - JAVA_HOME=/usr
-  #     - SPARK_HOME=/spark
-  #     - "SPARK_LOCAL_IP=spark-master"
-  #   networks:
-  #     - red-global
-  #   #command: bash -c "sleep 12 && /spark/bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.4,org.mongodb.spark:mongo-spark-connector_2.11:2.4.1 --class es.upm.dit.ging.predictor.MakePrediction --master local /prediction-job/flight_prediction_2.11-0.1.jar"
-  #   command: bash -c "/spark/bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.4,org.mongodb.spark:mongo-spark-connector_2.11:2.4.1 --class es.upm.dit.ging.predictor.MakePrediction --master local /prediction-job/flight_prediction_2.11-0.1.jar"
-    
-  #   volumes:
-  #     - ../prediction:/prediction-job
-  #     - ../models:/models
-
-  # spark-worker-1:
-  #   image: bde2020/spark-worker:2.4.4-hadoop2.7
-  #   container_name: spark-worker-1
-  #   depends_on:
-  #     - spark-master
-  #   ports:
-  #     - "8081:8081"
-  #   environment:
-  #     #- "SPARK_MASTspark-master:7077"
-  #     - "SPARK_MASTER=spark://spark-master:7077"
-  #     - "constraint:node==spark-worker-1"
-  #   networks:
-  #     - red-global
-
-    #sudo /spark/bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.4,org.mongodb.spark:mongo-spark-connector_2.11:2.4.1 --class es.upm.dit.ging.predictor.MakePrediction --master local /prediction-job/flight_prediction_2.11-0.1.jar
