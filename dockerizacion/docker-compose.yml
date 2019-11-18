@@ -20,9 +20,9 @@ services:
       - zookeeper
     environment:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_HOST_NAME: localhost
+      KAFKA_ADVERTISED_HOST_NAME: kafka
       KAFKA_CREATE_TOPICS: "flight_delay_classification_request:1:1"
-      KAFKA_LISTENERS: PLAINTEXT://:9092
+      KAFKA_LISTENERS: PLAINTEXT://kafka:9092
     networks:
       - red-global
 
@@ -65,7 +65,7 @@ services:
       - "8081:8081"
     environment:
       - "SPARK_MASTER=spark://spark-master:7077"
-    # command: bash -c "sleep 12 && /spark/bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.4,org.mongodb.spark:mongo-spark-connector_2.11:2.4.1 --class es.upm.dit.ging.predictor.MakePrediction --master local /prediction-job/flight_prediction_2.11-0.1.jar"
+    command: bash -c "sleep 12 && /spark/bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.4,org.mongodb.spark:mongo-spark-connector_2.11:2.4.1 --class es.upm.dit.ging.predictor.MakePrediction --master local /prediction-job/flight_prediction_2.11-0.1.jar"
     volumes:
       - ../prediction:/prediction-job
       - ../models:/models
