@@ -7,7 +7,7 @@ services:
       MYID: 1
       SERVERS: zookeeper
     ports:
-      - "2181:2181"
+      - "2181"
     networks:
       - red-global
 
@@ -15,7 +15,7 @@ services:
     container_name: kafka_container
     image: wurstmeister/kafka
     ports:
-      - "9092:9092"
+      - "9092"
     depends_on:
       - zookeeper
     environment:
@@ -37,14 +37,14 @@ services:
       - ../data:/data/db
       - ../resources:/resources
     ports:
-      - "27017:27017"
+      - "27017"
 
   spark-master:
     image: bde2020/spark-master:2.4.4-hadoop2.7
     container_name: spark-master
     ports:
-      - "8080:8080"
-      - "7077:7077"
+      - "8080"
+      - "7077"
     environment:
       - INIT_DAEMON_STEP=setup_spark
       - JAVA_HOME=/usr
@@ -52,7 +52,6 @@ services:
     volumes:
       - ../prediction:/prediction-job
       - ../models:/models
-    #command: bash -c "sleep 12 && /spark/bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.4,org.mongodb.spark:mongo-spark-connector_2.11:2.4.1 --class es.upm.dit.ging.predictor.MakePrediction --master local /prediction-job/flight_prediction_2.11-0.1.jar &"    
     networks:
       - red-global
 
@@ -62,7 +61,7 @@ services:
     depends_on:
       - spark-master
     ports:
-      - "8081:8081"
+      - "8081"
     environment:
       - "SPARK_MASTER=spark://spark-master:7077"
     command: bash -c "sleep 12 && /spark/bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.4,org.mongodb.spark:mongo-spark-connector_2.11:2.4.1 --class es.upm.dit.ging.predictor.MakePrediction --master local /prediction-job/flight_prediction_2.11-0.1.jar"
