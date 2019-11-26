@@ -20,12 +20,10 @@ services:
 
   mongo:
     container_name: mongo_container
-    image: mongo:3.4
+    image: alvarake/mongo_fbid
     command: --nojournal --noauth
-    #./resources/import_distances.sh
     volumes:
       - ../data:/data/db
-      - ../resources:/resources
     ports:
       - "27017"
 
@@ -59,9 +57,6 @@ services:
 
   web:
     container_name: web
-    image: alvarake/webapp_planes
+    image: alvarake/web_fbid
     ports:
       - "5000:5000"
-    command: /app/predict_flask.py
-    volumes:
-      - ./web/app:/app
