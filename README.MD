@@ -10,4 +10,4 @@ La aplicación se lanzara en el puerto 80.
 # En Local
 Para ejecutar el comando en local basta con situarse en la carpeta dockerizacion y lanzar:
 
-`docker-compose up
+`docker-compose up`
