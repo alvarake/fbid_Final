@@ -20,11 +20,11 @@ services:
       KAFKA_CREATE_TOPICS: "flight_delay_classification_request:1:1"
 
   mongo:
-    image: alvarake/mongo_fbid
+    image: alvarake/mongo_fbid:3.0
     container_name: mongo_container
     command: --nojournal --noauth
-    volumes:
-      - ../data:/data/db
+       # volumes:
+    #   - ../data:/data/db
     ports:
       - "27017"
 

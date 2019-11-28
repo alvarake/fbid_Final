@@ -1,0 +1,37 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.19.0 ()
+  creationTimestamp: null
+  labels:
+    io.kompose.service: kafka
+  name: kafka
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.19.0 ()
+      creationTimestamp: null
+      labels:
+        io.kompose.service: kafka
+    spec:
+      containers:
+      - env:
+        - name: KAFKA_ADVERTISED_HOST_NAME
+          value: kafka
+        - name: KAFKA_CREATE_TOPICS
+          value: flight_delay_classification_request:1:1
+        - name: KAFKA_ZOOKEEPER_CONNECT
+          value: zookeeper:2181
+        image: wurstmeister/kafka
+        name: kafka-container
+        ports:
+        - containerPort: 9092
+        resources: {}
+      restartPolicy: Always
+status: {}
