@@ -38,12 +38,9 @@ services:
       - JAVA_HOME=/usr
       - SPARK_HOME=/spark
       - "constraint:node==spark-master"
-    volumes:
-      - ../prediction:/prediction-job
-      - ../models:/models
 
   spark-submiter:
-    image: alvarake/spark-worker_fbid:4.3
+    image: alvarake/spark-worker_fbid:5.0
     container_name: spark-submiter
     depends_on:
       - spark-master
@@ -52,9 +49,10 @@ services:
     environment:
       - "SPARK_MASTER=spark://spark-master:7077"
       - "constraint:node==spark-submiter"
+    command: sh -c "sleep 12 && /prediction-job/startpredicition.sh"
   
   spark-worker-1:
-    image: bde2020/spark-worker:2.4.4-hadoop2.7
+    image: alvarake/spark-worker_fbid:5.0
     container_name: spark-worker1
     depends_on:
       - spark-master
@@ -63,12 +61,9 @@ services:
     environment:
       - "SPARK_MASTER=spark://spark-master:7077"
       - "constraint:node==spark-worker-1"
-    volumes:
-      - ../prediction:/prediction-job
-      - ../models:/models
 
   spark-worker-2:
-    image: bde2020/spark-worker:2.4.4-hadoop2.7
+    image: alvarake/spark-worker_fbid:5.0
     container_name: spark-worker2
     depends_on:
       - spark-master
@@ -77,10 +72,6 @@ services:
     environment:
       - "SPARK_MASTER=spark://spark-master:7077"
       - "constraint:node==spark-worker-2"
-    volumes:
-      - ../prediction:/prediction-job
-      - ../models:/models
-    
 
   web:
     image: alvarake/web_fbid:latest
