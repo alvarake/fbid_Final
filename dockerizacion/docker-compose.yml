@@ -61,6 +61,8 @@ services:
     environment:
       - "SPARK_MASTER=spark://spark-master:7077"
       - "constraint:node==spark-worker-1"
+    volumes:
+      - ../models:/models
 
   spark-worker-2:
     image: alvarake/spark-worker_fbid:5.0
@@ -72,6 +74,8 @@ services:
     environment:
       - "SPARK_MASTER=spark://spark-master:7077"
       - "constraint:node==spark-worker-2"
+    volumes:
+      - ../models:/models
 
   web:
     image: alvarake/web_fbid:latest

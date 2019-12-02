@@ -6,8 +6,8 @@ metadata:
     kompose.version: 1.19.0 ()
   creationTimestamp: null
   labels:
-    io.kompose.service: spark-worker-1
-  name: spark-worker-1
+    io.kompose.service: spark-submiter
+  name: spark-submiter
 spec:
   replicas: 1
   strategy: {}
@@ -18,20 +18,22 @@ spec:
         kompose.version: 1.19.0 ()
       creationTimestamp: null
       labels:
-        io.kompose.service: spark-worker-1
+        io.kompose.service: spark-submiter
     spec:
       containers:
-      - env:
+      - args:
+        - sh
+        - -c
+        - sleep 12 && /prediction-job/startpredicition.sh
+        env:
         - name: SPARK_MASTER
           value: spark://spark-master:7077
-        - name: SPARK_PUBLIC_DNS
-          value: spark-worker-1
         - name: constraint
-          value: node==spark-worker-1
-        image: alvarake/spark-worker_fbid:5.0
-        name: spark-worker1
+          value: node==spark-submiter
+        image: alvarake/spark-worker_fbid:7.0
+        name: spark-submiter
         ports:
-        - containerPort: 8082
+        - containerPort: 8081
         resources: {}
       restartPolicy: Always
 status: {}
