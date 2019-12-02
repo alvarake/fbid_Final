@@ -1,4 +1,8 @@
-Este proyecto se ha realizado a partir de  https://github.com/ging/practica_big_data_2019
+El proyecto con la información de como ejecutarlo se encuentra en:
+
+https://github.com/alvarake/fbid_Final
+
+Se ha realizado a partir de  https://github.com/ging/practica_big_data_2019
 
 # En Google Cloud Kubernetes.
 Para ejecutar el proyecto en Google Cloud Kubernetes se necesita lo siguiente:
